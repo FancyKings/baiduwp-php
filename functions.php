@@ -6,7 +6,7 @@
  *
  * 请勿随意修改此文件！如需更改相关配置请到 config.php ！
  *
- * @version 1.3.3
+ * @version 1.3.6
  *
  * @author Yuan_Tuo <yuantuo666@gmail.com>
  * @link https://imwcr.cn/
@@ -137,7 +137,9 @@ function getSign(string $surl, $randsk) {
 		"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.514.1919.810 Safari/537.36",
 		"Cookie: BDUSS=" . BDUSS . ";STOKEN=" . STOKEN . ";BDCLND=" . $randsk . ";"
 	);
-	if (preg_match('/yunData.setData\((\{.*?\})\);/', get($url, $header), $matches)) return json_decode($matches[1], true);
+	// if (preg_match('/yunData.setData\((\{.*?\})\);/', get($url, $header), $matches)) return json_decode($matches[1], true);
+	//如果不修改这里,则要修改配置文件ini
+	if (preg_match('/yunData.setData\((\{.*?\})\);/', get($url, $header), $matches)) return json_decode($matches[1], true, 512, JSON_BIGINT_AS_STRING);
 	else return 1;
 }
 function FileList($sign) {

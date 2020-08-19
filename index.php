@@ -11,7 +11,7 @@
  *
  * 此项目 GitHub 地址：https://github.com/yuantuo666/baiduwp-php
  *
- * @version 1.3.3
+ * @version 1.3.6
  *
  * @author Yuan_Tuo <yuantuo666@gmail.com>
  * @link https://imwcr.cn/
@@ -21,19 +21,18 @@
  * @link https://lcwebsite.cn/
  * @link https://space.bilibili.com/52618445
  */
-// 导入配置和函数
 session_start();
 define('init', true);
-if (version_compare(phpversion(), '7.0', '<')) {
-	http_response_code(503); header('Content-Type: text/plain; charset=utf-8');
-	die('PanDownload复刻版运行环境 需要PHP环境在 7.0 以上 ，当前是'.phpversion().'请更新');
+if (version_compare(PHP_VERSION, '7.0.0', '<')) {
+	http_response_code(503); header('Content-Type: text/plain; charset=utf-8'); header('Refresh: 5;url=https://www.php.net/downloads.php');
+	die("HTTP 503 服务不可用！\r\nPHP 版本过低！无法正常运行程序！\r\n请安装 7.0.0 或以上版本的 PHP！\r\n将在五秒内跳转到 PHP 官方下载页面！");
 }
-if (file_exists('config.php') && file_exists('functions.php')) {
-	require('config.php'); require('functions.php');
-} else {
+if (!(file_exists('config.php') && file_exists('functions.php'))) {
 	http_response_code(503); header('Content-Type: text/plain; charset=utf-8'); header('Refresh: 5;url=https://github.com/yuantuo666/baiduwp-php');
 	die("HTTP 503 服务不可用！\r\n缺少相关配置和定义文件！无法正常运行程序！\r\n请重新 Clone 项目并配置！\r\n将在五秒内跳转到 GitHub 储存库！");
 }
+// 导入配置和函数
+require('config.php'); require('functions.php');
 // 通用响应头
 header('Content-Type: text/html; charset=utf-8');
 header('X-UA-Compatible: IE=edge,chrome=1');
@@ -206,8 +205,8 @@ header('X-UA-Compatible: IE=edge,chrome=1');
 							<h5 class="alert-heading">获取下载链接失败</h5><hr /><p class="card-text">已获取到文件，但未能获取到下载链接！</p><p class="card-text">请检查你是否在 <code>config.php</code> 中配置 SVIP 账号的 BDUSS 和 STOKEN！</p>
 							<p class="card-text">未配置或配置了普通账号的均会导致失败！必须要 SVIP 账号！</p>' . FileInfo($filename, $size, $md5, $server_ctime) . '</div></div></div>'; // 未配置 SVIP 账号
 						else echo '<div class="row justify-content-center"><div class="col-md-7 col-sm-8 col-11"><div class="alert alert-primary" role="alert">
-							<h5 class="alert-heading">获取下载链接成功</h5><hr />' . FileInfo($filename, $size, $md5, $server_ctime) . '<p class="card-text"><a href="http://' . $realLink . '" target="_blank">下载链接（不安全）</a>
-							<a href="https://' . $realLink . '" target="_blank">下载链接（安全）</a></p><p class="card-text"><a href="?help" target="_blank">下载链接使用方法（必读）</a></p></div></div></div>'; // 成功！
+							<h5 class="alert-heading">获取下载链接成功</h5><hr />' . FileInfo($filename, $size, $md5, $server_ctime) . '<p class="card-text"><a href="http://' . $realLink . '" target="_blank" rel="nofollow noopener noreferrer">下载链接（不安全）</a>
+							<a href="https://' . $realLink . '" target="_blank" rel="nofollow noopener noreferrer">下载链接（安全）</a></p><p class="card-text"><a href="?help" target="_blank">下载链接使用方法（必读）</a></p></div></div></div>'; // 成功！
 					} else echo '<div class="row justify-content-center"><div class="col-md-7 col-sm-8 col-11"><div class="alert alert-danger" role="alert">
 						<h5 class="alert-heading">获取下载链接失败</h5><hr /><p class="card-text">未知错误！</p></div></div></div>'; // 未知错误
 				} else echo '<div class="row justify-content-center"><div class="col-md-7 col-sm-8 col-11"><div class="alert alert-danger" role="alert">
